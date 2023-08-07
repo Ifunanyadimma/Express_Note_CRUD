@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response, response } from "express";
+import { NextFunction, Request, Response} from "express";
 import { v4 as UUIDV4 } from "uuid";
 import { User, UserAttributes } from "../model/user";
 import { promises } from "dns";
@@ -11,6 +11,7 @@ export async function postUser(
 ) {
   const newId = UUIDV4();
   const { fullname, email, gender, phone, address } = req.body;
+
   const find_user = await User.findOne({ where: { email: email } });
   if (find_user) {
     return res.status(404).json({
@@ -79,8 +80,25 @@ export async function putUser(
   }
 
   const result = await User.findOne({where: {id:newId}});
-  return res.status(400).json({
+  return res.status(200).json({
     message: "successful",
     result
   });
 }
+
+
+export const deleteUser = async (req: Request, res: Response) => {
+try {
+const { id } = req.params;
+const record = await User.findOne({ where: { id } });
+
+if (!record) {
+return res.status(404).json({ error: "Cannot find existing user" });
+      }
+await record.destroy();
+return res.status(204).json({ msg: "User deleted successfully" });
+    } catch (error) {
+      console.error(error);
+return res.status(500).json({ error: "Something went wrong" });
+    }
+  };

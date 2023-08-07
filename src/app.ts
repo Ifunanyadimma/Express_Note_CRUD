@@ -5,7 +5,6 @@ import path from "path";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
 
-
 import {db} from "./config/db.config";
 import usersRouter from "./routes/users";
 
@@ -74,7 +73,7 @@ app.use(
 );
 
 //PORT
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3008;
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });

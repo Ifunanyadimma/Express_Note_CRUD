@@ -9,5 +9,6 @@ const router = express.Router();
 router.post("/post", postUser);
 router.get("/get", getUser);
 router.put("/put", putUser)
+router.delete("")
 
 export default router;

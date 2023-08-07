@@ -18,6 +18,7 @@ Note.init(
     },
     Title: {
       type: DataTypes.STRING,
+      unique: true,
       allowNull: false,
     },
     description: {
