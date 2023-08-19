@@ -3,10 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
 const sequelize_1 = require("sequelize");
 const db_config_1 = require("../config/db.config");
+const note_1 = require("./note");
 class User extends sequelize_1.Model {
-    static Update() {
-        throw new Error("Method not implemented.");
-    }
 }
 exports.User = User;
 User.init({
@@ -24,6 +22,10 @@ User.init({
         unique: true,
         allowNull: false,
     },
+    password: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false,
+    },
     gender: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false,
@@ -38,5 +40,7 @@ User.init({
     },
 }, {
     sequelize: db_config_1.db,
-    tableName: "User",
+    tableName: "user",
 });
+User.hasMany(note_1.Note, { foreignKey: 'userId', as: 'note' });
+note_1.Note.belongsTo(User, { foreignKey: 'userId', as: 'user' });

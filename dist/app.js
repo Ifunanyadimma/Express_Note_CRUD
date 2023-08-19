@@ -9,21 +9,7 @@ const express_1 = __importDefault(require("express"));
 const path_1 = __importDefault(require("path"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const morgan_1 = __importDefault(require("morgan"));
-const db_config_1 = require("./config/db.config");
-const users_1 = __importDefault(require("./routes/users"));
-db_config_1.db.sync()
-    .then(() => {
-    console.log("database connected");
-})
-    .catch((err) => {
-    console.log("err syncing db", err);
-});
-(0, dotenv_1.config)();
-//console.log(process.env);
-const myLogger = function (req, res, next) {
-    console.log("LOGGED");
-    next();
-};
+const body_parser_1 = __importDefault(require("body-parser"));
 const app = (0, express_1.default)();
 console.log(app.get("env"));
 // view engine setup
@@ -38,8 +24,28 @@ app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: false }));
 app.use((0, cookie_parser_1.default)());
 app.use(express_1.default.static(path_1.default.join(__dirname, "..", "public")));
-app.use("/api", users_1.default);
-// app.use()
+app.use(body_parser_1.default.json());
+const users_1 = __importDefault(require("./routes/users"));
+const note_1 = __importDefault(require("./routes/note"));
+//import homePage from "./routes/page";
+const config_1 = require("./config");
+config_1.db.sync()
+    .then(() => {
+    console.log("database connected");
+})
+    .catch((err) => {
+    console.log("err syncing db", err);
+});
+(0, dotenv_1.config)();
+//console.log(process.env);
+const myLogger = function (req, res, next) {
+    console.log("LOGGED");
+    next();
+};
+//middleware that relates to the endpoint
+app.use("/api/note", note_1.default);
+app.use("/api/user", users_1.default);
+//app.use("/", homePage);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     next((0, http_errors_1.default)(404));
@@ -54,8 +60,4 @@ app.use(() => (err, req, res, next) => {
     res.render("error");
 });
 //PORT
-const port = process.env.PORT || 3008;
-app.listen(port, () => {
-    console.log(`Listening on port ${port}`);
-});
 exports.default = app;

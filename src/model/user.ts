@@ -1,20 +1,18 @@
 import { DataTypes, Model } from "sequelize";
 import {db} from "../config/db.config";
+import { Note } from "./note";
 
 export interface UserAttributes {
   id: string;
   fullname: string;
   email: string;
+  password: string;
   gender: string;
   phone: string;
   address: string;
 }
 
-export class User extends Model<UserAttributes> {
-  static Update() {
-    throw new Error("Method not implemented.");
-  }
-}
+export class User extends Model<UserAttributes> {}
 
 
 User.init(
@@ -33,12 +31,14 @@ User.init(
       unique: true,
       allowNull: false,
     },
-
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     gender: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-
     phone: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -50,6 +50,13 @@ User.init(
   },
   {
     sequelize: db,
-    tableName: "User",
+    tableName: "user",
   }
 );
+
+
+
+
+User.hasMany(Note, {foreignKey: 'userId', as: 'note'});
+
+Note.belongsTo(User, {foreignKey: 'userId', as: 'user'});

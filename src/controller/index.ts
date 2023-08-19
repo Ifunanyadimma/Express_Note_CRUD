@@ -1,1 +1,1 @@
-export * from "./userCont"
+export * from "./userController"

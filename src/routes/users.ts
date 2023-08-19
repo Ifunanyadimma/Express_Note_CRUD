@@ -1,14 +1,13 @@
 import express, { Request, Response, NextFunction } from "express";
-import { postUser, getUser, putUser } from "../controller";
-import { Note } from "../model/note";
-// import { User } from "../model/users";
-
-
+import { signup, Login,get_User,update_User,delete_User,get_users,Logout} from "../controller/userController";
 const router = express.Router();
 
-router.post("/post", postUser);
-router.get("/get", getUser);
-router.put("/put", putUser)
-router.delete("")
+router.post("/create", signup);
+router.post("/login", Login);
+router.get("/read", get_users);
+router.put("/update/:id", update_User);
+router.delete("/delete/:id", delete_User);
+router.get("/users/:id", get_User);
+router.get("/logout", Logout);
 
 export default router;

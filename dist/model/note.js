@@ -30,7 +30,11 @@ Note.init({
         type: sequelize_1.DataTypes.STRING,
         allowNull: false,
     },
+    userId: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false,
+    },
 }, {
     sequelize: db_config_1.db,
-    tableName: "Note",
+    tableName: "note",
 });
